@@ -45,12 +45,15 @@ module.exports = async (req, res) => {
     const {
       BILLPLZ_COLLECTION_ID,
       BILLPLZ_API_KEY,
+      BILLPLZ_SECRET_KEY,
       BILLPLZ_BASE_URL,
       BILLPLZ_CALLBACK_URL,
       BILLPLZ_REDIRECT_URL,
     } = process.env;
 
-    if (!BILLPLZ_COLLECTION_ID || !BILLPLZ_API_KEY) {
+    const resolvedApiKey = BILLPLZ_API_KEY || BILLPLZ_SECRET_KEY;
+
+    if (!BILLPLZ_COLLECTION_ID || !resolvedApiKey) {
       return res.status(500).json({ message: 'Billplz env vars are missing.' });
     }
 
@@ -152,7 +155,7 @@ module.exports = async (req, res) => {
       params.set('deliver', 'false');
     }
 
-    const basicAuth = Buffer.from(`${BILLPLZ_API_KEY}:`).toString('base64');
+    const basicAuth = Buffer.from(`${resolvedApiKey}:`).toString('base64');
     const baseUrl = trimTrailingSlashes(BILLPLZ_BASE_URL || DEFAULT_BILLPLZ_BASE_URL);
 
     const response = await fetch(`${baseUrl}/bills`, {
