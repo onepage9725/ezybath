@@ -259,7 +259,7 @@ if (cartCheckoutBtn && checkoutForm) {
 }
 
 if (checkoutForm) {
-  checkoutForm.addEventListener('submit', (event) => {
+  checkoutForm.addEventListener('submit', async (event) => {
     event.preventDefault();
 
     if (getTotalQty() === 0) {
@@ -271,17 +271,58 @@ if (checkoutForm) {
       return;
     }
 
-    alert('支付资料已提交，我们将尽快与您联系确认订单。');
-    checkoutForm.reset();
-    checkoutForm.hidden = true;
+    const submitBtn = checkoutForm.querySelector('button[type="submit"]');
+    const originalSubmitText = submitBtn instanceof HTMLButtonElement ? submitBtn.textContent : '';
 
-    if (cartCheckoutBtn) {
-      cartCheckoutBtn.hidden = false;
+    try {
+      if (submitBtn instanceof HTMLButtonElement) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = '正在连接支付...';
+      }
+
+      const formData = new FormData(checkoutForm);
+      const payload = {
+        cart: cart.map((item) => ({
+          id: item.id,
+          name: item.name,
+          qty: item.qty,
+          price: item.price,
+        })),
+        customer: {
+          email: String(formData.get('email') || '').trim(),
+          contactNumber: String(formData.get('contactNumber') || '').trim(),
+          firstName: String(formData.get('firstName') || '').trim(),
+          lastName: String(formData.get('lastName') || '').trim(),
+          address: String(formData.get('address') || '').trim(),
+          apartment: String(formData.get('apartment') || '').trim(),
+          postcode: String(formData.get('postcode') || '').trim(),
+          city: String(formData.get('city') || '').trim(),
+          state: String(formData.get('state') || '').trim(),
+        },
+      };
+
+      const response = await fetch('/api/create-bill', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || !result?.url) {
+        throw new Error(result?.message || '创建支付链接失败，请稍后重试。');
+      }
+
+      window.location.href = result.url;
+    } catch (error) {
+      alert(error instanceof Error ? error.message : '创建支付链接失败，请稍后重试。');
+    } finally {
+      if (submitBtn instanceof HTMLButtonElement) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalSubmitText || 'Pay Now';
+      }
     }
-
-    cart.splice(0, cart.length);
-    renderCart();
-    closeCart();
   });
 }
 
