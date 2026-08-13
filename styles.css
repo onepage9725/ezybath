@@ -805,7 +805,6 @@ img {
   color: #1f4628;
 }
 
-.cart-checkout-btn,
 .cart-pay-btn {
   width: 100%;
   margin-top: 0;
@@ -813,8 +812,6 @@ img {
   background: var(--accent);
 }
 
-.cart-checkout-btn:hover,
-.cart-checkout-btn:focus-visible,
 .cart-pay-btn:hover,
 .cart-pay-btn:focus-visible {
   background: var(--accent-deep);

@@ -71,7 +71,6 @@ const cartClose = document.querySelector('#cart-close');
 const cartItems = document.querySelector('#cart-items');
 const cartEmpty = document.querySelector('#cart-empty');
 const cartSubtotal = document.querySelector('#cart-subtotal');
-const cartCheckoutBtn = document.querySelector('#cart-checkout-btn');
 const checkoutForm = document.querySelector('#checkout-form');
 const testiCarouselTrack = document.querySelector('#testi-carousel-track');
 const testiCarouselPrev = document.querySelector('#testi-carousel-prev');
@@ -132,7 +131,6 @@ function renderCart() {
 
   const hasItems = totalQty > 0;
   cartEmpty.hidden = hasItems;
-  cartCheckoutBtn.disabled = !hasItems;
 }
 
 function openCart() {
@@ -246,16 +244,6 @@ if (cartClose) {
 
 if (cartOverlay) {
   cartOverlay.addEventListener('click', closeCart);
-}
-
-if (cartCheckoutBtn && checkoutForm) {
-  cartCheckoutBtn.addEventListener('click', () => {
-    if (getTotalQty() === 0) {
-      return;
-    }
-    checkoutForm.hidden = false;
-    cartCheckoutBtn.hidden = true;
-  });
 }
 
 if (checkoutForm) {
