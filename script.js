@@ -72,6 +72,7 @@ const cartItems = document.querySelector('#cart-items');
 const cartEmpty = document.querySelector('#cart-empty');
 const cartSubtotal = document.querySelector('#cart-subtotal');
 const checkoutForm = document.querySelector('#checkout-form');
+const testimonialLoopTrack = document.querySelector('.testi-loop-track');
 const testiCarouselTrack = document.querySelector('#testi-carousel-track');
 const testiCarouselPrev = document.querySelector('#testi-carousel-prev');
 const testiCarouselNext = document.querySelector('#testi-carousel-next');
@@ -79,6 +80,51 @@ const imageLightbox = document.querySelector('#image-lightbox');
 const imageLightboxImg = document.querySelector('#image-lightbox-img');
 
 const cart = [];
+
+const TESTIMONIAL_LOOP_IMAGES = [
+  'ezybath content/ezybath_testi_1/IMG_6034.png',
+  'ezybath content/ezybath_testi_1/IMG_6035.png',
+  'ezybath content/ezybath_testi_1/IMG_6036.png',
+  'ezybath content/ezybath_testi_1/IMG_6037.png',
+  'ezybath content/ezybath_testi_1/IMG_6039.png',
+  'ezybath content/ezybath_testi_1/IMG_6040.png',
+  'ezybath content/ezybath_testi_1/WhatsApp Image 2026-07-27 at 13.50.19.jpeg',
+  'ezybath content/ezybath_testi_1/WhatsApp Image 2026-07-27 at 14.09.56.jpeg',
+  'ezybath content/ezybath_testi_1/WhatsApp Image 2026-07-27 at 14.18.09.jpeg',
+  'ezybath content/ezybath_testi_1/WhatsApp Image 2026-07-27 at 14.37.47.jpeg',
+  'ezybath content/ezybath_testi_1/WhatsApp Image 2026-07-27 at 14.41.55.jpeg',
+  'ezybath content/ezybath_testi_1/WhatsApp Image 2026-07-28 at 11.43.48.jpeg',
+];
+
+function shuffleArray(values) {
+  const shuffled = [...values];
+
+  for (let i = shuffled.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+
+  return shuffled;
+}
+
+function renderTestimonialLoop() {
+  if (!testimonialLoopTrack || TESTIMONIAL_LOOP_IMAGES.length === 0) {
+    return;
+  }
+
+  const shuffledImages = shuffleArray(TESTIMONIAL_LOOP_IMAGES);
+  const primary = shuffledImages
+    .map(
+      (src, index) => `<article class="testi-photo"><img src="${src}" alt="顾客反馈图片 ${index + 1}" loading="lazy" /></article>`,
+    )
+    .join('');
+
+  const duplicate = shuffledImages
+    .map((src) => `<article class="testi-photo" aria-hidden="true"><img src="${src}" alt="" loading="lazy" /></article>`)
+    .join('');
+
+  testimonialLoopTrack.innerHTML = primary + duplicate;
+}
 
 function formatMoney(amount) {
   return `RM${amount.toFixed(2)}`;
@@ -463,4 +509,5 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
+renderTestimonialLoop();
 renderCart();
