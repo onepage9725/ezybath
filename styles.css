@@ -810,7 +810,9 @@ img {
 }
 
 .top-award .awards-grid {
-  margin-top: 16px;
+  max-width: 1160px;
+  margin: 16px auto 0;
+  gap: 12px;
 }
 
 .cart-fab {
