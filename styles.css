@@ -74,6 +74,34 @@ img {
   z-index: 2;
 }
 
+.lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.52);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.lang-toggle-btn {
+  border: 0;
+  border-radius: 999px;
+  padding: 6px 10px;
+  min-width: 38px;
+  font-family: "Noto Sans SC", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #ffffff;
+  background: transparent;
+  cursor: pointer;
+}
+
+.lang-toggle-btn.active {
+  background: #ffffff;
+  color: #1f4628;
+}
+
 .header-packages-btn {
   display: inline-flex;
   align-items: center;
@@ -1365,11 +1393,12 @@ img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center 22%;
   display: block;
 }
 
 .testi-photo img.testi-face-focus {
-  object-position: center 18%;
+  object-position: center 8%;
 }
 
 .testi-carousel {
@@ -1756,6 +1785,17 @@ body.no-scroll {
     margin-left: auto;
     margin-right: 8px;
     gap: 8px;
+  }
+
+  .lang-toggle {
+    padding: 3px;
+    gap: 2px;
+  }
+
+  .lang-toggle-btn {
+    min-width: 34px;
+    padding: 5px 8px;
+    font-size: 0.7rem;
   }
 
   .header-packages-btn {
