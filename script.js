@@ -82,7 +82,7 @@ const imageLightbox = document.querySelector('#image-lightbox');
 const imageLightboxImg = document.querySelector('#image-lightbox-img');
 
 const cart = [];
-let currentLanguage = 'zh';
+let currentLanguage = 'en';
 
 const TESTIMONIAL_LOOP_MALE_IMAGES = [
   'ezybath content/ezybath_testi_1/IMG_6034.png',
@@ -1013,4 +1013,4 @@ if (langEnBtn) {
 }
 
 takeI18nSnapshot();
-applyLanguage('zh');
+applyLanguage('en');
