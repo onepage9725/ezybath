@@ -94,17 +94,42 @@
       </section>
 
       <section class="section sale-countdown" id="countdown" aria-label="促销倒数计时">
-        <p class="countdown-tag">限时优惠倒数中 • 买 3 送 2+2</p>
-        <h2>今日促销结束倒数</h2>
-        <div class="time-grid" role="timer" aria-live="polite">
-          <article class="time-box"><span id="count-hours">02</span><small>小时</small></article>
-          <em>:</em>
-          <article class="time-box"><span id="count-mins">00</span><small>分钟</small></article>
-          <em>:</em>
-          <article class="time-box"><span id="count-secs">00</span><small>秒</small></article>
+        <div class="sale-countdown-inner">
+          <div class="countdown-left">
+            <p class="countdown-tag">限时优惠倒数中 • 买 3 送 2+2</p>
+            <h2>今日促销结束倒数</h2>
+            <div class="time-grid" role="timer" aria-live="polite">
+              <article class="time-box"><span id="count-hours">02</span><small>小时</small></article>
+              <em>:</em>
+              <article class="time-box"><span id="count-mins">00</span><small>分钟</small></article>
+              <em>:</em>
+              <article class="time-box"><span id="count-secs">00</span><small>秒</small></article>
+            </div>
+            <a class="countdown-cta" href="#packages">立即抢购 →</a>
+            <p class="countdown-note">优惠即将结束 · 限量 30 套 · 全马包邮</p>
+          </div>
+
+          <aside class="countdown-right" aria-label="前后对比滑动查看">
+            <h3 class="bna-title">Before / After Result</h3>
+            <p class="bna-hint">Drag left or right to compare</p>
+            <div class="bna-slider" data-before-after>
+              <div class="bna-stage">
+                <img class="bna-image" src="bna/before.jpeg" alt="Before using EzyBath" loading="lazy" />
+                <div class="bna-after-layer" aria-hidden="true">
+                  <img class="bna-image" src="bna/after.jpeg" alt="After using EzyBath" loading="lazy" />
+                </div>
+                <div class="bna-divider" aria-hidden="true">
+                  <button class="bna-handle" type="button" aria-label="Drag to compare before and after images"></button>
+                </div>
+              </div>
+              <input class="bna-range" type="range" min="0" max="100" value="50" aria-label="Before and after image comparison slider" />
+              <div class="bna-label-row" aria-hidden="true">
+                <span class="bna-label">Before</span>
+                <span class="bna-label">After</span>
+              </div>
+            </div>
+          </aside>
         </div>
-        <a class="countdown-cta" href="#packages">立即抢购 →</a>
-        <p class="countdown-note">优惠即将结束 · 限量 30 套 · 全马包邮</p>
       </section>
 
       <section id="benefits" class="section benefits">

@@ -80,6 +80,7 @@ const testiCarouselPrev = document.querySelector('#testi-carousel-prev');
 const testiCarouselNext = document.querySelector('#testi-carousel-next');
 const imageLightbox = document.querySelector('#image-lightbox');
 const imageLightboxImg = document.querySelector('#image-lightbox-img');
+const beforeAfterSlider = document.querySelector('[data-before-after]');
 
 const cart = [];
 let currentLanguage = 'en';
@@ -877,6 +878,63 @@ function openImageLightbox(imageSrc, imageAlt) {
   document.body.classList.add('no-scroll');
 }
 
+function initBeforeAfterSlider() {
+  if (!beforeAfterSlider) {
+    return;
+  }
+
+  const stage = beforeAfterSlider.querySelector('.bna-stage');
+  const range = beforeAfterSlider.querySelector('.bna-range');
+
+  if (!(stage instanceof HTMLElement) || !(range instanceof HTMLInputElement)) {
+    return;
+  }
+
+  const clampValue = (value) => Math.min(100, Math.max(0, value));
+
+  const setPosition = (value) => {
+    const next = clampValue(value);
+    beforeAfterSlider.style.setProperty('--bna-position', `${next}%`);
+    range.value = String(next);
+  };
+
+  const setPositionFromClientX = (clientX) => {
+    const rect = stage.getBoundingClientRect();
+    if (rect.width <= 0) {
+      return;
+    }
+
+    const relative = ((clientX - rect.left) / rect.width) * 100;
+    setPosition(relative);
+  };
+
+  range.addEventListener('input', () => {
+    setPosition(Number(range.value));
+  });
+
+  const startPointerDrag = (event) => {
+    if (!(event instanceof PointerEvent)) {
+      return;
+    }
+
+    setPositionFromClientX(event.clientX);
+    stage.setPointerCapture(event.pointerId);
+  };
+
+  const movePointerDrag = (event) => {
+    if (!(event instanceof PointerEvent) || (event.buttons === 0 && event.pointerType !== 'touch')) {
+      return;
+    }
+
+    setPositionFromClientX(event.clientX);
+  };
+
+  stage.addEventListener('pointerdown', startPointerDrag);
+  stage.addEventListener('pointermove', movePointerDrag);
+
+  setPosition(Number(range.value));
+}
+
 function closeImageLightbox() {
   if (!imageLightbox || !imageLightboxImg) {
     return;
@@ -1014,3 +1072,4 @@ if (langEnBtn) {
 
 takeI18nSnapshot();
 applyLanguage('en');
+initBeforeAfterSlider();
