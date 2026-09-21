@@ -14,27 +14,10 @@
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap"
       rel="stylesheet"
     />
-    <!-- Meta Pixel Code -->
-    <script>
-      !function(f,b,e,v,n,t,s)
-      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-      n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)}(window, document,'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', '2336664583539211');
-      fbq('track', 'PageView');
-    </script>
-    <!-- End Meta Pixel Code -->
     <link rel="icon" type="image/png" href="ezybath_logo.png" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <noscript><img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=2336664583539211&ev=PageView&noscript=1"
-    /></noscript>
     <header class="site-header" id="home">
       <a class="brand" href="#home" aria-label="EzyBath 首页">
         <img src="ezybath_logo.png" alt="EzyBath logo" />
@@ -114,12 +97,17 @@
             <p class="bna-hint">Drag left or right to compare</p>
             <div class="bna-slider" data-before-after>
               <div class="bna-stage">
-                <img class="bna-image" src="bna/before.jpeg" alt="Before using EzyBath" loading="lazy" />
+                <img class="bna-image" src="bna/after.jpeg" alt="After using EzyBath" loading="lazy" />
                 <div class="bna-after-layer" aria-hidden="true">
-                  <img class="bna-image" src="bna/after.jpeg" alt="After using EzyBath" loading="lazy" />
+                  <img class="bna-image" src="bna/before.jpeg" alt="Before using EzyBath" loading="lazy" />
                 </div>
                 <div class="bna-divider" aria-hidden="true">
-                  <button class="bna-handle" type="button" aria-label="Drag to compare before and after images"></button>
+                  <button class="bna-handle" type="button" aria-label="Drag to compare before and after images">
+                    <svg viewBox="0 0 24 24" role="presentation" focusable="false" aria-hidden="true">
+                      <line x1="15" y1="18" x2="9" y2="12"></line>
+                      <line x1="9" y1="6" x2="15" y2="12"></line>
+                    </svg>
+                  </button>
                 </div>
               </div>
               <input class="bna-range" type="range" min="0" max="100" value="50" aria-label="Before and after image comparison slider" />
@@ -147,6 +135,12 @@
           <article><span class="benefit-icon">🌿</span><p>补充皮肤营养</p></article>
           <article><span class="benefit-icon">✨</span><p>提高皮肤免疫力</p></article>
           <article><span class="benefit-icon">💧</span><p>360°补水保湿</p></article>
+        </div>
+        <div class="benefits-bna-grid" aria-label="使用前后对比图片">
+          <figure class="benefits-bna-card"><img src="bna/9.png" alt="顾客前后对比图 1" loading="lazy" /></figure>
+          <figure class="benefits-bna-card"><img src="bna/10.png" alt="顾客前后对比图 2" loading="lazy" /></figure>
+          <figure class="benefits-bna-card"><img src="bna/11.png" alt="顾客前后对比图 3" loading="lazy" /></figure>
+          <figure class="benefits-bna-card"><img src="bna/12.png" alt="顾客前后对比图 4" loading="lazy" /></figure>
         </div>
       </section>
 
@@ -343,6 +337,20 @@
           <article><strong>500ml</strong><span>超大容量 一分钱一分货</span></article>
           <article><strong>KKM</strong><span>安全认证</span></article>
         </div>
+
+        <section class="delivery-carousel" id="delivery-carousel" aria-label="配送反馈轮播">
+          <div class="delivery-carousel-head">
+            <h3 id="delivery-carousel-title">真实配送反馈</h3>
+          </div>
+          <div class="delivery-carousel-shell">
+            <button class="delivery-carousel-nav" id="delivery-carousel-prev" type="button" aria-label="查看上一条">←</button>
+            <div class="delivery-carousel-viewport">
+              <div class="delivery-carousel-track" id="delivery-carousel-track"></div>
+            </div>
+            <button class="delivery-carousel-nav" id="delivery-carousel-next" type="button" aria-label="查看下一条">→</button>
+          </div>
+        </section>
+
         <div class="quotes">
           <blockquote>
             <div class="review-stars" aria-label="5 stars" role="img">★★★★★</div>
@@ -350,6 +358,7 @@
               <strong>Angel Tan</strong>
               以前用了含 SLS/SLES 的廉价沐浴露导致保护膜破裂，用了两个星期后，红肿脱皮真的减少很多，冲凉时也不再那么干裂刺痛，肌底终于不再像火烧一样发炎。
             </p>
+            <img class="review-delivery-image" src="deliveryimage/delivery1.jpg" alt="Angel Tan 顾客反馈图片" loading="lazy" />
           </blockquote>
           <blockquote>
             <div class="review-stars" aria-label="5 stars" role="img">★★★★★</div>
@@ -357,6 +366,7 @@
               <strong>Joshua Cheah</strong>
               以前动不动就湿疹、牛皮癣反反复复，现在靠 Bericos Ectoin 深入消炎，坚持使用后舒服很多，最重要是洗完 8D Octaplex 360°补水真的有种不再干痒的感觉。
             </p>
+            <img class="review-delivery-image" src="deliveryimage/delivery2.jpg" alt="Joshua Cheah 顾客反馈图片" loading="lazy" />
           </blockquote>
           <blockquote>
             <div class="review-stars" aria-label="5 stars" role="img">★★★★★</div>
@@ -364,6 +374,7 @@
               <strong>Low Mei Ling</strong>
               买给家人一起用，大家都说 Vitamin E 爆开吸收后皮肤自己修复得很舒服，我自己也感觉皮肤变得更滑更亮，不用依赖类固醇，已经回购 7 罐了。
             </p>
+            <img class="review-delivery-image" src="deliveryimage/delivery3.jpg" alt="Low Mei Ling 顾客反馈图片" loading="lazy" />
           </blockquote>
         </div>
 

@@ -78,6 +78,11 @@ const testimonialLoopTrack = document.querySelector('.testi-loop-track');
 const testiCarouselTrack = document.querySelector('#testi-carousel-track');
 const testiCarouselPrev = document.querySelector('#testi-carousel-prev');
 const testiCarouselNext = document.querySelector('#testi-carousel-next');
+const deliveryCarouselSection = document.querySelector('#delivery-carousel');
+const deliveryCarouselTitle = document.querySelector('#delivery-carousel-title');
+const deliveryCarouselTrack = document.querySelector('#delivery-carousel-track');
+const deliveryCarouselPrev = document.querySelector('#delivery-carousel-prev');
+const deliveryCarouselNext = document.querySelector('#delivery-carousel-next');
 const imageLightbox = document.querySelector('#image-lightbox');
 const imageLightboxImg = document.querySelector('#image-lightbox-img');
 const beforeAfterSlider = document.querySelector('[data-before-after]');
@@ -106,6 +111,53 @@ const TESTIMONIAL_LOOP_FEMALE_IMAGES = [
 const TESTIMONIAL_FACE_FOCUS_IMAGES = new Set([
   'ezybath content/ezybath_testi_1/WhatsApp Image 2026-07-27 at 13.50.19.jpeg',
 ]);
+
+const DELIVERY_REVIEWS = [
+  {
+    image: 'deliveryimage/delivery4.jpg',
+    en: 'Fast shipping, great product, zero complaints. 10/10 would recommend.',
+    zh: '发货快，东西好，没有任何可挑剔的。满分推荐。',
+    author: 'Sarah T.',
+  },
+  {
+    image: 'deliveryimage/delivery5.jpg',
+    en: 'Their customer service was super helpful and answered all my questions patiently. The item even arrived earlier than expected.',
+    zh: '客服态度超级好，耐心解答了我的所有问题。包裹甚至比预期更早送达。',
+    author: 'Elise C.',
+  },
+  {
+    image: 'deliveryimage/delivery6.jpg',
+    en: 'I have been using ezybath, and it is highly effective. It is very easy to use.',
+    zh: '用了 ezybath，真的很有效果！而且非常好用！',
+    author: 'Mr Tan.',
+  },
+  {
+    image: 'deliveryimage/delivery7.jpg',
+    en: 'I have struggled with eczema and itchy skin for years, but EzyBath has been a lifesaver. It stops the itching almost instantly. Highly recommend!',
+    zh: '我被湿疹和皮肤干痒困扰了好几年，但 EzyBath 简直是我的救星。洗完后它几乎立刻就能止痒。强烈推荐！',
+    author: 'Wendy N.',
+  },
+  {
+    image: 'deliveryimage/delivery8.jpg',
+    en: 'Finally, a body wash without harsh chemicals or SLS! My skin feels so smooth and hydrated after every shower.',
+    zh: '终于找到一款没有刺激性化学物质或SLS的沐浴露了！每次洗完澡皮肤都感觉特别水润光滑。',
+    author: 'Jerry C.',
+  },
+  {
+    image: 'deliveryimage/delivery9.jpg',
+    en: 'After using EzyBath for just two weeks, my skin redness and peeling have significantly reduced. I love it.',
+    zh: '仅仅用了两个星期 EzyBath，我皮肤的泛红和脱皮就明显减少了。我太喜欢了！',
+    author: 'Siew Yen T.',
+  },
+  {
+    image: 'deliveryimage/delivery10.jpg',
+    en: 'I was skeptical at first, but this product truly delivers. The medical-grade formula is gentle yet effective. Will definitely repurchase!',
+    zh: '刚开始我抱着怀疑的态度，但这款产品真的名副其实。医用级配方温和又有效。绝对会无限回购！',
+    author: 'Ah Liau Y.',
+  },
+];
+
+let deliveryCarouselIndex = 0;
 
 const I18N_BINDINGS = [
   { key: 'docTitle', selector: 'title' },
@@ -577,6 +629,7 @@ function applyLanguage(lang) {
   updatePackageButtonDatasetNames(currentLanguage);
   updateCartFabLabel(currentLanguage);
   renderTestimonialLoop();
+  renderDeliveryCarousel();
   renderCart();
 }
 
@@ -615,6 +668,56 @@ function renderTestimonialLoop() {
     .join('');
 
   testimonialLoopTrack.innerHTML = primary + duplicate;
+}
+
+function renderDeliveryCarousel() {
+  if (!deliveryCarouselTrack || DELIVERY_REVIEWS.length === 0) {
+    return;
+  }
+
+  const isEnglish = currentLanguage === 'en';
+
+  if (deliveryCarouselTitle) {
+    deliveryCarouselTitle.textContent = isEnglish ? 'Real Delivery Feedback' : '真实配送反馈';
+  }
+
+  if (deliveryCarouselSection) {
+    deliveryCarouselSection.setAttribute('aria-label', isEnglish ? 'Delivery feedback carousel' : '配送反馈轮播');
+  }
+
+  if (deliveryCarouselPrev) {
+    deliveryCarouselPrev.setAttribute('aria-label', isEnglish ? 'View previous feedback' : '查看上一条');
+  }
+
+  if (deliveryCarouselNext) {
+    deliveryCarouselNext.setAttribute('aria-label', isEnglish ? 'View next feedback' : '查看下一条');
+  }
+
+  deliveryCarouselTrack.innerHTML = DELIVERY_REVIEWS.map((item, index) => {
+    const reviewText = isEnglish ? item.en : item.zh;
+    const reviewAlt = isEnglish ? `Delivery feedback image ${index + 1}` : `配送反馈图片 ${index + 1}`;
+
+    return `
+      <article class="delivery-slide" aria-label="${item.author}">
+        <img class="delivery-slide-image" src="${item.image}" alt="${reviewAlt}" loading="lazy" />
+        <div class="delivery-slide-body">
+          <p class="delivery-slide-text">${reviewText}</p>
+          <p class="delivery-slide-author">${item.author}</p>
+        </div>
+      </article>
+    `;
+  }).join('');
+
+  deliveryCarouselTrack.style.transform = `translateX(-${deliveryCarouselIndex * 100}%)`;
+}
+
+function moveDeliveryCarousel(step) {
+  if (!deliveryCarouselTrack || DELIVERY_REVIEWS.length === 0) {
+    return;
+  }
+
+  deliveryCarouselIndex = (deliveryCarouselIndex + step + DELIVERY_REVIEWS.length) % DELIVERY_REVIEWS.length;
+  deliveryCarouselTrack.style.transform = `translateX(-${deliveryCarouselIndex * 100}%)`;
 }
 
 function formatMoney(amount) {
@@ -912,16 +1015,17 @@ function initBeforeAfterSlider() {
     setPosition(Number(range.value));
   });
 
-  const startPointerDrag = (event) => {
+  const onPointerDown = (event) => {
     if (!(event instanceof PointerEvent)) {
       return;
     }
 
+    beforeAfterSlider.classList.add('is-dragging');
     setPositionFromClientX(event.clientX);
     stage.setPointerCapture(event.pointerId);
   };
 
-  const movePointerDrag = (event) => {
+  const onPointerMove = (event) => {
     if (!(event instanceof PointerEvent) || (event.buttons === 0 && event.pointerType !== 'touch')) {
       return;
     }
@@ -929,8 +1033,15 @@ function initBeforeAfterSlider() {
     setPositionFromClientX(event.clientX);
   };
 
-  stage.addEventListener('pointerdown', startPointerDrag);
-  stage.addEventListener('pointermove', movePointerDrag);
+  const onPointerUp = () => {
+    beforeAfterSlider.classList.remove('is-dragging');
+  };
+
+  stage.addEventListener('pointerdown', onPointerDown);
+  stage.addEventListener('pointermove', onPointerMove);
+  stage.addEventListener('pointerup', onPointerUp);
+  stage.addEventListener('pointercancel', onPointerUp);
+  stage.addEventListener('lostpointercapture', onPointerUp);
 
   setPosition(Number(range.value));
 }
@@ -1039,6 +1150,16 @@ if (testiCarouselTrack && testiCarouselPrev && testiCarouselNext) {
   testiCarouselTrack.addEventListener('touchstart', stopCarouselAuto, { passive: true });
   testiCarouselTrack.addEventListener('touchend', startCarouselAuto);
 
+}
+
+if (deliveryCarouselPrev && deliveryCarouselNext && deliveryCarouselTrack) {
+  deliveryCarouselPrev.addEventListener('click', () => {
+    moveDeliveryCarousel(-1);
+  });
+
+  deliveryCarouselNext.addEventListener('click', () => {
+    moveDeliveryCarousel(1);
+  });
 }
 
 if (imageLightbox) {
