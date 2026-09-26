@@ -112,6 +112,39 @@ const TESTIMONIAL_FACE_FOCUS_IMAGES = new Set([
   'ezybath content/ezybath_testi_1/WhatsApp Image 2026-07-27 at 13.50.19.jpeg',
 ]);
 
+function getRandomFeedbackDate(startDate, endDate) {
+  const startTime = startDate.getTime();
+  const endTime = endDate.getTime();
+  const randomTime = startTime + Math.floor(Math.random() * (endTime - startTime + 1));
+  const date = new Date(randomTime);
+
+  date.setHours(0, 0, 0, 0);
+  return date;
+}
+
+function formatFeedbackDate(dateValue, isEnglish) {
+  if (!(dateValue instanceof Date)) {
+    return '';
+  }
+
+  if (isEnglish) {
+    return new Intl.DateTimeFormat('en-GB', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    }).format(dateValue);
+  }
+
+  const year = dateValue.getFullYear();
+  const month = dateValue.getMonth() + 1;
+  const day = dateValue.getDate();
+  return `${year}年${month}月${day}日`;
+}
+
+const deliveryReviewYear = new Date().getFullYear();
+const deliveryReviewStartDate = new Date(deliveryReviewYear, 3, 1);
+const deliveryReviewEndDate = new Date(deliveryReviewYear, 7, 31);
+
 const DELIVERY_REVIEWS = [
   {
     image: 'deliveryimage/delivery4.jpg',
@@ -155,9 +188,67 @@ const DELIVERY_REVIEWS = [
     zh: '刚开始我抱着怀疑的态度，但这款产品真的名副其实。医用级配方温和又有效。绝对会无限回购！',
     author: 'Ah Liau Y.',
   },
-];
+].map((item) => ({
+  ...item,
+  date: getRandomFeedbackDate(deliveryReviewStartDate, deliveryReviewEndDate),
+}));
 
 let deliveryCarouselIndex = 0;
+
+function getDeliveryCardsPerView() {
+  if (window.innerWidth <= 760) {
+    return 1;
+  }
+
+  if (window.innerWidth <= 1200) {
+    return 2;
+  }
+
+  return 4;
+}
+
+function getDeliveryCarouselMaxIndex() {
+  return Math.max(0, DELIVERY_REVIEWS.length - getDeliveryCardsPerView());
+}
+
+function getDeliverySlideStep() {
+  if (!deliveryCarouselTrack) {
+    return 0;
+  }
+
+  const firstSlide = deliveryCarouselTrack.querySelector('.delivery-slide');
+  if (!(firstSlide instanceof HTMLElement)) {
+    return 0;
+  }
+
+  const trackStyles = window.getComputedStyle(deliveryCarouselTrack);
+  const gap = parseFloat(trackStyles.columnGap || trackStyles.gap || '0');
+  return firstSlide.getBoundingClientRect().width + gap;
+}
+
+function updateDeliveryCarouselPosition() {
+  if (!deliveryCarouselTrack) {
+    return;
+  }
+
+  const maxIndex = getDeliveryCarouselMaxIndex();
+  deliveryCarouselIndex = Math.min(Math.max(deliveryCarouselIndex, 0), maxIndex);
+
+  const step = getDeliverySlideStep();
+  deliveryCarouselTrack.style.transform = `translateX(-${deliveryCarouselIndex * step}px)`;
+
+  if (deliveryCarouselPrev) {
+    const disabled = deliveryCarouselIndex === 0;
+    deliveryCarouselPrev.disabled = disabled;
+    deliveryCarouselPrev.setAttribute('aria-disabled', String(disabled));
+  }
+
+  if (deliveryCarouselNext) {
+    const disabled = deliveryCarouselIndex >= maxIndex;
+    deliveryCarouselNext.disabled = disabled;
+    deliveryCarouselNext.setAttribute('aria-disabled', String(disabled));
+  }
+}
 
 const I18N_BINDINGS = [
   { key: 'docTitle', selector: 'title' },
@@ -298,6 +389,7 @@ const I18N_BINDINGS = [
   { key: 'footerQuick2', selector: '.footer-col a', index: 2 },
   { key: 'footerQuick3', selector: '.footer-col a', index: 3 },
   { key: 'footerQuick4', selector: '.footer-col a', index: 4 },
+  { key: 'footerQuick5', selector: '.footer-col a', index: 5 },
   { key: 'footerFacebookTitle', selector: '.footer-col h3', index: 2 },
   { key: 'footerFacebookLink', selector: '.footer-col p a', index: 1 },
   { key: 'footerCopyright', selector: '.footer-bottom p' },
@@ -479,6 +571,7 @@ const EN_TRANSLATIONS = {
   footerQuick2: 'Our Story',
   footerQuick3: 'How to Use?',
   footerQuick4: 'FAQ',
+  footerQuick5: 'Customer Testimonials',
   footerFacebookTitle: 'Facebook Page',
   footerFacebookLink: 'EzyBath Antibacterial Body Wash',
   footerCopyright: '© 2026 EzyBath Antibacterial Body Wash. All Rights Reserved.',
@@ -678,7 +771,7 @@ function renderDeliveryCarousel() {
   const isEnglish = currentLanguage === 'en';
 
   if (deliveryCarouselTitle) {
-    deliveryCarouselTitle.textContent = isEnglish ? 'Real Delivery Feedback' : '真实配送反馈';
+    deliveryCarouselTitle.textContent = isEnglish ? 'Customer Feedback' : '到货记录 & 反馈';
   }
 
   if (deliveryCarouselSection) {
@@ -693,22 +786,32 @@ function renderDeliveryCarousel() {
     deliveryCarouselNext.setAttribute('aria-label', isEnglish ? 'View next feedback' : '查看下一条');
   }
 
+  if (deliveryCarouselSection) {
+    deliveryCarouselSection.style.setProperty('--cards-per-view', String(getDeliveryCardsPerView()));
+  }
+
   deliveryCarouselTrack.innerHTML = DELIVERY_REVIEWS.map((item, index) => {
     const reviewText = isEnglish ? item.en : item.zh;
     const reviewAlt = isEnglish ? `Delivery feedback image ${index + 1}` : `配送反馈图片 ${index + 1}`;
+    const verifiedText = isEnglish ? 'Verified' : '已验证';
+    const verifiedDate = formatFeedbackDate(item.date, isEnglish);
 
     return `
       <article class="delivery-slide" aria-label="${item.author}">
         <img class="delivery-slide-image" src="${item.image}" alt="${reviewAlt}" loading="lazy" />
         <div class="delivery-slide-body">
+          <p class="delivery-slide-stars" aria-label="5 stars" role="img">★★★★★</p>
           <p class="delivery-slide-text">${reviewText}</p>
-          <p class="delivery-slide-author">${item.author}</p>
+          <div class="delivery-slide-meta">
+            <p class="delivery-slide-author">${item.author}</p>
+            <p class="delivery-slide-verified">✓ ${verifiedText} · <span class="delivery-slide-date">${verifiedDate}</span></p>
+          </div>
         </div>
       </article>
     `;
   }).join('');
 
-  deliveryCarouselTrack.style.transform = `translateX(-${deliveryCarouselIndex * 100}%)`;
+  updateDeliveryCarouselPosition();
 }
 
 function moveDeliveryCarousel(step) {
@@ -716,8 +819,9 @@ function moveDeliveryCarousel(step) {
     return;
   }
 
-  deliveryCarouselIndex = (deliveryCarouselIndex + step + DELIVERY_REVIEWS.length) % DELIVERY_REVIEWS.length;
-  deliveryCarouselTrack.style.transform = `translateX(-${deliveryCarouselIndex * 100}%)`;
+  const maxIndex = getDeliveryCarouselMaxIndex();
+  deliveryCarouselIndex = Math.min(maxIndex, Math.max(0, deliveryCarouselIndex + step));
+  updateDeliveryCarouselPosition();
 }
 
 function formatMoney(amount) {
@@ -1161,6 +1265,18 @@ if (deliveryCarouselPrev && deliveryCarouselNext && deliveryCarouselTrack) {
     moveDeliveryCarousel(1);
   });
 }
+
+window.addEventListener('resize', () => {
+  if (!deliveryCarouselTrack) {
+    return;
+  }
+
+  if (deliveryCarouselSection) {
+    deliveryCarouselSection.style.setProperty('--cards-per-view', String(getDeliveryCardsPerView()));
+  }
+
+  updateDeliveryCarouselPosition();
+});
 
 if (imageLightbox) {
   imageLightbox.hidden = true;
