@@ -47,6 +47,7 @@ const menuBtn = document.querySelector('.menu-btn');
 const nav = document.querySelector('.main-nav');
 const langZhBtn = document.querySelector('#lang-zh');
 const langEnBtn = document.querySelector('#lang-en');
+const whatsappFloat = document.querySelector('#whatsapp-float');
 
 if (menuBtn && nav) {
   menuBtn.addEventListener('click', () => {
@@ -89,6 +90,11 @@ const beforeAfterSlider = document.querySelector('[data-before-after]');
 
 const cart = [];
 let currentLanguage = 'en';
+const WHATSAPP_NUMBER = '601153393494';
+const WHATSAPP_MESSAGE_BY_LANG = {
+  en: 'I am interested to EzyBath product.',
+  zh: '我对EzyBath产品感兴趣。',
+};
 
 const TESTIMONIAL_LOOP_MALE_IMAGES = [
   'ezybath content/ezybath_testi_1/IMG_6034.png',
@@ -452,9 +458,9 @@ const EN_TRANSLATIONS = {
   package3Badge: 'Best Value',
   package3Name: 'Value Package',
   package3Promo: 'Buy 3, Get 2+2 Free',
-  package3Original: 'Original Price: RM1090',
-  package3Item2: 'EzyBath (Travel Pack) 30ml x1',
-  package3Item3: 'RM14 Discount Voucher x1',
+  package3Original: 'Original Price: RM1527',
+  package3Item2: 'EzyBath 4in1 Powerbank x1',
+  package3Item3: 'RM128 Discount Voucher x1',
   package3AddBtn: 'ADD TO CART',
   topAwardAria: 'Asia Top 100 Favourite Product Award',
   topAwardKicker: 'Asia Top 100 Favourite Product Award',
@@ -578,8 +584,8 @@ const EN_TRANSLATIONS = {
 };
 
 const PACKAGE_NAME_BY_LANG = {
-  zh: ['EzyBath 套装 RM198', 'EzyBath 套装 RM396', 'EzyBath 套装 RM640'],
-  en: ['EzyBath Package RM198', 'EzyBath Package RM396', 'EzyBath Package RM640'],
+  zh: ['EzyBath 套装 RM198', 'EzyBath 套装 RM396', 'EzyBath 套装 RM744'],
+  en: ['EzyBath Package RM198', 'EzyBath Package RM396', 'EzyBath Package RM744'],
 };
 
 const i18nOriginalSnapshot = new Map();
@@ -652,6 +658,19 @@ function updateCartFabLabel(lang) {
   cartFab.insertBefore(document.createTextNode(`${label} `), cartFab.firstChild);
 }
 
+function updateWhatsAppLink(lang) {
+  if (!(whatsappFloat instanceof HTMLAnchorElement)) {
+    return;
+  }
+
+  const selectedLang = lang === 'en' ? 'en' : 'zh';
+  const message = WHATSAPP_MESSAGE_BY_LANG[selectedLang];
+  const encodedMessage = encodeURIComponent(message);
+
+  whatsappFloat.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+  whatsappFloat.setAttribute('aria-label', selectedLang === 'en' ? 'Contact us on WhatsApp' : '通过 WhatsApp 联系我们');
+}
+
 function applyLanguage(lang) {
   currentLanguage = lang === 'en' ? 'en' : 'zh';
   document.documentElement.lang = currentLanguage === 'en' ? 'en' : 'zh-Hans';
@@ -721,6 +740,7 @@ function applyLanguage(lang) {
 
   updatePackageButtonDatasetNames(currentLanguage);
   updateCartFabLabel(currentLanguage);
+  updateWhatsAppLink(currentLanguage);
   renderTestimonialLoop();
   renderDeliveryCarousel();
   renderCart();
