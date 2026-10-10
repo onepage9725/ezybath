@@ -148,13 +148,14 @@ module.exports = async (req, res) => {
 
     params.set('reference_1_label', 'Order ID');
     params.set('reference_1', orderId.slice(0, 120));
-    params.set('reference_2_label', 'Items');
-    params.set('reference_2', itemsLabel.slice(0, 120));
 
-    if (billingAddress) {
-      params.set('deliver', 'true');
-      params.set('deliver[address]', billingAddress.slice(0, 255));
-    }
+    const reference2Label = billingAddress ? 'Address & Items' : 'Items';
+    const reference2Value = billingAddress
+      ? `${billingAddress} | ${itemsLabel}`
+      : itemsLabel;
+
+    params.set('reference_2_label', reference2Label);
+    params.set('reference_2', reference2Value.slice(0, 120));
 
     const basicAuth = Buffer.from(`${resolvedApiKey}:`).toString('base64');
     const baseUrl = trimTrailingSlashes(BILLPLZ_BASE_URL || DEFAULT_BILLPLZ_BASE_URL);
