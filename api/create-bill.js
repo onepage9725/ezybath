@@ -152,7 +152,8 @@ module.exports = async (req, res) => {
     params.set('reference_2', itemsLabel.slice(0, 120));
 
     if (billingAddress) {
-      params.set('deliver', 'false');
+      params.set('deliver', 'true');
+      params.set('deliver[address]', billingAddress.slice(0, 255));
     }
 
     const basicAuth = Buffer.from(`${resolvedApiKey}:`).toString('base64');
