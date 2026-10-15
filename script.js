@@ -457,10 +457,10 @@ const EN_TRANSLATIONS = {
   package2AddBtn: 'ADD TO CART',
   package3Badge: 'Best Value',
   package3Name: 'Value Package',
-  package3Promo: 'Buy 3, Get 2+2 Free',
-  package3Original: 'Original Price: RM1527',
-  package3Item2: 'EzyBath 4in1 Powerbank x1',
-  package3Item3: 'RM128 Discount Voucher x1',
+  package3Promo: 'Buy 5 +RM1 Get RM1200 gifts',
+  package3Original: 'Original Price: RM2192',
+  package3Item2: 'HH Limited Hair Dryer x1',
+  package3Item3: 'RM111 Voucher x1',
   package3AddBtn: 'ADD TO CART',
   topAwardAria: 'Asia Top 100 Favourite Product Award',
   topAwardKicker: 'Asia Top 100 Favourite Product Award',
@@ -584,8 +584,8 @@ const EN_TRANSLATIONS = {
 };
 
 const PACKAGE_NAME_BY_LANG = {
-  zh: ['EzyBath 套装 RM198', 'EzyBath 套装 RM396', 'EzyBath 套装 RM744'],
-  en: ['EzyBath Package RM198', 'EzyBath Package RM396', 'EzyBath Package RM744'],
+  zh: ['EzyBath 套装 RM198', 'EzyBath 套装 RM396', 'EzyBath 套装 RM991'],
+  en: ['EzyBath Package RM198', 'EzyBath Package RM396', 'EzyBath Package RM991'],
 };
 
 const i18nOriginalSnapshot = new Map();
